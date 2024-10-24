@@ -1,10 +1,9 @@
 package main
 
 import (
+	"FPF_Wire/internal/conf"
 	"flag"
 	"os"
-
-	"FPF_Wire/internal/conf"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
@@ -63,6 +62,7 @@ func main() {
 			file.NewSource(flagconf),
 		),
 	)
+
 	defer c.Close()
 
 	if err := c.Load(); err != nil {
