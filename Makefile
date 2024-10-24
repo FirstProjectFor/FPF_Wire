@@ -25,6 +25,10 @@ init:
 	go install github.com/google/gnostic/cmd/protoc-gen-openapi@latest
 	go install github.com/google/wire/cmd/wire@latest
 
+.PHONY: wire
+wire:
+	cd cmd/FPF_Wire && wire
+
 .PHONY: config
 # generate internal proto
 config:
@@ -50,6 +54,11 @@ build:
 	mkdir -p bin/ && go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/ ./...
 
 .PHONY: generate
+
+.PHONY: run
+run:
+	./bin/FPF_Wire -conf ./configs/config.yaml
+
 # generate
 generate:
 	go generate ./...
