@@ -3,8 +3,7 @@
 
 openapi: 3.0.3
 info:
-    title: Greeter API
-    description: The greeting service definition.
+    title: ""
     version: 0.0.1
 paths:
     /helloworld/{name}:
@@ -26,6 +25,19 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.HelloReply'
+    /ping:
+        get:
+            tags:
+                - PingPong
+            description: Sends a greeting
+            operationId: PingPong_Ping
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.PingReply'
 components:
     schemas:
         helloworld.v1.HelloReply:
@@ -34,5 +46,14 @@ components:
                 message:
                     type: string
             description: The response message containing the greetings
+        helloworld.v1.PingReply:
+            type: object
+            properties:
+                message:
+                    type: string
+            description: The response message containing the greetings
 tags:
     - name: Greeter
+      description: The greeting service definition.
+    - name: PingPong
+      description: The greeting service definition.
