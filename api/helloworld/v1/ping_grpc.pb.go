@@ -29,7 +29,7 @@ const (
 // The greeting service definition.
 type PingPongClient interface {
 	// Sends a greeting
-	Ping(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*PingReply, error)
+	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingReply, error)
 }
 
 type pingPongClient struct {
@@ -40,7 +40,7 @@ func NewPingPongClient(cc grpc.ClientConnInterface) PingPongClient {
 	return &pingPongClient{cc}
 }
 
-func (c *pingPongClient) Ping(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*PingReply, error) {
+func (c *pingPongClient) Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(PingReply)
 	err := c.cc.Invoke(ctx, PingPong_Ping_FullMethodName, in, out, cOpts...)
@@ -57,7 +57,7 @@ func (c *pingPongClient) Ping(ctx context.Context, in *EmptyRequest, opts ...grp
 // The greeting service definition.
 type PingPongServer interface {
 	// Sends a greeting
-	Ping(context.Context, *EmptyRequest) (*PingReply, error)
+	Ping(context.Context, *PingRequest) (*PingReply, error)
 	mustEmbedUnimplementedPingPongServer()
 }
 
@@ -68,7 +68,7 @@ type PingPongServer interface {
 // pointer dereference when methods are called.
 type UnimplementedPingPongServer struct{}
 
-func (UnimplementedPingPongServer) Ping(context.Context, *EmptyRequest) (*PingReply, error) {
+func (UnimplementedPingPongServer) Ping(context.Context, *PingRequest) (*PingReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
 }
 func (UnimplementedPingPongServer) mustEmbedUnimplementedPingPongServer() {}
@@ -93,7 +93,7 @@ func RegisterPingPongServer(s grpc.ServiceRegistrar, srv PingPongServer) {
 }
 
 func _PingPong_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EmptyRequest)
+	in := new(PingRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -105,7 +105,7 @@ func _PingPong_Ping_Handler(srv interface{}, ctx context.Context, dec func(inter
 		FullMethod: PingPong_Ping_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PingPongServer).Ping(ctx, req.(*EmptyRequest))
+		return srv.(PingPongServer).Ping(ctx, req.(*PingRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

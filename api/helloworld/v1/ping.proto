@@ -12,7 +12,7 @@ option java_outer_classname = "HelloworldProtoV1";
 // The greeting service definition.
 service PingPong {
   // Sends a greeting
-  rpc Ping (EmptyRequest) returns (PingReply) {
+  rpc Ping (PingRequest) returns (PingReply) {
     option (google.api.http) = {
       get: "/ping"
     };
@@ -20,7 +20,7 @@ service PingPong {
 }
 
 // empty message
-message EmptyRequest{
+message PingRequest{
 }
 
 // The response message containing the greetings

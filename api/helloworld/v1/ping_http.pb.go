@@ -23,7 +23,7 @@ const OperationPingPongPing = "/helloworld.v1.PingPong/Ping"
 
 type PingPongHTTPServer interface {
 	// Ping Sends a greeting
-	Ping(context.Context, *EmptyRequest) (*PingReply, error)
+	Ping(context.Context, *PingRequest) (*PingReply, error)
 }
 
 func RegisterPingPongHTTPServer(s *http.Server, srv PingPongHTTPServer) {
@@ -33,13 +33,13 @@ func RegisterPingPongHTTPServer(s *http.Server, srv PingPongHTTPServer) {
 
 func _PingPong_Ping0_HTTP_Handler(srv PingPongHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in EmptyRequest
+		var in PingRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		http.SetOperation(ctx, OperationPingPongPing)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.Ping(ctx, req.(*EmptyRequest))
+			return srv.Ping(ctx, req.(*PingRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -51,7 +51,7 @@ func _PingPong_Ping0_HTTP_Handler(srv PingPongHTTPServer) func(ctx http.Context)
 }
 
 type PingPongHTTPClient interface {
-	Ping(ctx context.Context, req *EmptyRequest, opts ...http.CallOption) (rsp *PingReply, err error)
+	Ping(ctx context.Context, req *PingRequest, opts ...http.CallOption) (rsp *PingReply, err error)
 }
 
 type PingPongHTTPClientImpl struct {
@@ -62,7 +62,7 @@ func NewPingPongHTTPClient(client *http.Client) PingPongHTTPClient {
 	return &PingPongHTTPClientImpl{client}
 }
 
-func (c *PingPongHTTPClientImpl) Ping(ctx context.Context, in *EmptyRequest, opts ...http.CallOption) (*PingReply, error) {
+func (c *PingPongHTTPClientImpl) Ping(ctx context.Context, in *PingRequest, opts ...http.CallOption) (*PingReply, error) {
 	var out PingReply
 	pattern := "/ping"
 	path := binding.EncodeURL(pattern, in, true)
